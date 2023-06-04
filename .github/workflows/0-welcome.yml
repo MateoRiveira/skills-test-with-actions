@@ -42,6 +42,25 @@ jobs:
     # Reference: https://docs.github.com/en/actions/learn-github-actions/expressions
     if: >-
       ${{ !github.event.repository.is_template
+      
+     build:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Run markdown lint
+      run: |
+        npm install remark-cli remark-preset-lint-consistent
+        npx remark . --use remark-preset-lint-consistent --frail
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: remark-lint-report
+        path: public/ 
+      
+      
+      
+      
           && needs.get_current_step.outputs.current_step == 0 }}
 
     # We'll run Ubuntu for performance instead of Mac or Windows.
